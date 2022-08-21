@@ -1,0 +1,25 @@
+<resources>
+
+    <!-- Strings used for application -->
+
+    <string name="app_name">RedTok</string>
+
+    <!-- Strings used for fragments for navigation -->
+
+    <string name="auth_fragment_label">AuthFragment</string>
+    <string name="data_fragment_label">DataFragment</string>
+
+    <!-- AuthFragment -->
+
+    <string name="Login">Login via Reddit</string>
+    <string name="Logout">Logout</string>
+
+    <!-- FeedFragment -->
+
+    <string name="Data">Get data</string>
+    <string name="Icon">Icon</string>
+
+    <!-- TextPostFragment -->
+
+    <string name="BtnReadMore">Read more</string>
+</resources>
