@@ -3,6 +3,7 @@ package ru.project.ui
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -12,16 +13,18 @@ import ru.project.databinding.FragmentFeedBinding
 import ru.project.extensions.toast
 import ru.project.viewmodels.DataState
 import ru.project.viewmodels.FeedViewModel
+import ru.project.viewmodels.SharedViewModel
 
 class FeedFragment : Fragment(R.layout.fragment_feed) {
 
     private val binding by viewBinding(FragmentFeedBinding::bind)
     private val viewModel: FeedViewModel by viewModels()
+    private val sharedViewModel: SharedViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.state.observe(viewLifecycleOwner, {
+        viewModel.state.observe(viewLifecycleOwner) {
             when (it) {
                 is DataState.LoadingState -> {
 
@@ -41,8 +44,15 @@ class FeedFragment : Fragment(R.layout.fragment_feed) {
                     findNavController()
                         .navigate(FeedFragmentDirections.actionDataFragmentToAuthFragment())
                 }
+                else -> {}
             }
-        })
+        }
+
+        sharedViewModel.selected.observe(viewLifecycleOwner) { item ->
+            if (item.equals("refresh")) {
+                viewModel.getPost("antiwork")
+            }
+        }
     }
 
     private fun createPost(postSubreddit: String?, iconUrl: String?, postTitle: String?, data: String?) {
@@ -57,9 +67,8 @@ class FeedFragment : Fragment(R.layout.fragment_feed) {
                 title.text = postTitle
                 image.into(icon)
 
-                parentFragmentManager.beginTransaction().add(post.id, TextPostFragment::class.java, bundle).commit()
+                parentFragmentManager.beginTransaction().replace(post.id, TextPostFragment::class.java, bundle).commit()
             }
         }
     }
-
 }

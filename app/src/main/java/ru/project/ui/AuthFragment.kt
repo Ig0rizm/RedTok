@@ -35,18 +35,15 @@ class AuthFragment : Fragment(R.layout.fragment_auth) {
             }
         }
 
-        viewModel.state.observe(viewLifecycleOwner, {
+        viewModel.state.observe(viewLifecycleOwner) {
             when (it) {
                 is AuthState.DefaultState -> {}
-
                 is AuthState.LoginState -> openAuthPage(it.intent)
-
                 is AuthState.ErrorState -> toast("Error")
-
                 is AuthState.SuccessAuthState -> findNavController()
                     .navigate(AuthFragmentDirections.actionAuthFragmentToDataFragment())
             }
-        })
+        }
     }
 
     private fun openAuthPage(intent: Intent) {

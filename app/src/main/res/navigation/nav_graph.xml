@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/authFragment"
         android:name="ru.project.ui.AuthFragment"
-        android:label="@string/auth_fragment_label"
+        android:label="@string/authFragmentLabel"
         tools:layout="@layout/fragment_auth">
         <action
             android:id="@+id/action_authFragment_to_dataFragment"
@@ -18,7 +18,7 @@
     <fragment
         android:id="@+id/dataFragment"
         android:name="ru.project.ui.FeedFragment"
-        android:label="@string/data_fragment_label"
+        android:label="@string/dataFragmentLabel"
         tools:layout="@layout/fragment_feed">
         <action
             android:id="@+id/action_dataFragment_to_authFragment"

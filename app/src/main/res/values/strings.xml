@@ -4,10 +4,14 @@
 
     <string name="app_name">RedTok</string>
 
+    <!-- Strings used for menu -->
+
+    <string name="refreshBtn">Refresh</string>
+
     <!-- Strings used for fragments for navigation -->
 
-    <string name="auth_fragment_label">AuthFragment</string>
-    <string name="data_fragment_label">DataFragment</string>
+    <string name="authFragmentLabel">AuthFragment</string>
+    <string name="dataFragmentLabel">DataFragment</string>
 
     <!-- AuthFragment -->
 

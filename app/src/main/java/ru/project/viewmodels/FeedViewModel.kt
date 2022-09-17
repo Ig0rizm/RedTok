@@ -18,6 +18,8 @@ import ru.project.extensions.set
 import ru.project.repo.FeedRepository
 
 sealed class DataState {
+    class DefaultState: DataState()
+
     class LoadingState: DataState()
 
     class LoadedState(
@@ -47,7 +49,7 @@ class FeedViewModel(app: Application) : AndroidViewModel(app) {
             state.default(DataState.LoadedState(feedRepo.getSubreddit()!!, feedRepo.getTitle()!!, feedRepo.getIcon()!!, feedRepo.getText()!!))
         }
         else {
-            state.default(DataState.LoadingState())
+            state.default(DataState.DefaultState())
             getPost("antiwork")
         }
     }
@@ -61,10 +63,11 @@ class FeedViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun getPost(subreddit: String) {
+        state.set(DataState.LoadingState())
         val subredditInfo = getSubredditInfo(subreddit)
         val postInfo = getRandomPost(subreddit)
 
-        compositeDisposable.add(postInfo.zipWith(subredditInfo, { t, u -> Pair(t, u)})
+        compositeDisposable.add(postInfo.zipWith(subredditInfo) { t, u -> Pair(t, u) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -77,6 +80,8 @@ class FeedViewModel(app: Application) : AndroidViewModel(app) {
                         findTitle(postBody),
                         findIcon(subredditBody),
                         findData(postBody)))
+
+                    state.set(DataState.DefaultState())
                 }
                 else {
                     sharedPref.edit().putString("apiToken", "").apply()
