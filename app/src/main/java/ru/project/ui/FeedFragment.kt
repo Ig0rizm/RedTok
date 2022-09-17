@@ -2,6 +2,7 @@ package ru.project.ui
 
 import android.os.Bundle
 import android.view.View
+import android.webkit.URLUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -59,15 +60,21 @@ class FeedFragment : Fragment(R.layout.fragment_feed) {
         if (postSubreddit != null && iconUrl != null && postTitle != null && data != null) {
 
             val image = GlideApp.with(this).load(iconUrl)
-            val bundle = Bundle()
-            bundle.putString("data", data)
 
             with (binding) {
                 subreddit.text = postSubreddit
                 title.text = postTitle
                 image.into(icon)
 
-                parentFragmentManager.beginTransaction().replace(post.id, TextPostFragment::class.java, bundle).commit()
+                val bundle = Bundle()
+                if (URLUtil.isValidUrl(data) and ((data.takeLast(4) == ".jpg") or (data.takeLast(4) == ".png"))) {
+                    bundle.putString("imageUrl", data)
+                    parentFragmentManager.beginTransaction().replace(post.id, ImagePostFragment::class.java, bundle).commit()
+                }
+                else {
+                    bundle.putString("data", data)
+                    parentFragmentManager.beginTransaction().replace(post.id, TextPostFragment::class.java, bundle).commit()
+                }
             }
         }
     }

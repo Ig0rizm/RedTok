@@ -26,4 +26,8 @@
     <!-- TextPostFragment -->
 
     <string name="BtnReadMore">Read more</string>
+
+    <!-- ImagePostFragment -->
+
+    <string name="imageName">ImagePost</string>
 </resources>

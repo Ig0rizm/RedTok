@@ -106,7 +106,13 @@ class FeedViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     private fun findData(post: Post): String? {
-        return post.first().data.children.first().data.selftextHtml
+        var data: String? = post.first().data.children.first().data.selftextHtml
+
+        if (data == null) {
+            data = post.first().data.children.first().data.urlOverriddenByDest
+        }
+
+        return data
     }
 
     override fun onCleared() {

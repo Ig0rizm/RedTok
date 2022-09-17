@@ -6,11 +6,11 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import by.kirich1409.viewbindingdelegate.viewBinding
 import ru.project.R
-import ru.project.databinding.FragmantPostTextBinding
+import ru.project.databinding.FragmentPostTextBinding
 
-class TextPostFragment : Fragment(R.layout.fragmant_post_text) {
+class TextPostFragment : Fragment(R.layout.fragment_post_text) {
 
-    private val binding by viewBinding(FragmantPostTextBinding::bind)
+    private val binding by viewBinding(FragmentPostTextBinding::bind)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
