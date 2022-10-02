@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import ru.project.R
 import ru.project.app.GlideApp
+import ru.project.app.RedTok
 import ru.project.databinding.FragmentFeedBinding
 import ru.project.extensions.toast
 import ru.project.viewmodels.DataState
@@ -21,6 +22,12 @@ class FeedFragment : Fragment(R.layout.fragment_feed) {
     private val binding by viewBinding(FragmentFeedBinding::bind)
     private val viewModel: FeedViewModel by viewModels()
     private val sharedViewModel: SharedViewModel by activityViewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        (activity?.application as RedTok).appComponent.inject(viewModel)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

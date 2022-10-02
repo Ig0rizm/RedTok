@@ -11,10 +11,12 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationResponse
 import ru.project.R
+import ru.project.app.RedTok
 import ru.project.databinding.FragmentAuthBinding
 import ru.project.extensions.toast
 import ru.project.viewmodels.AuthState
 import ru.project.viewmodels.AuthViewModel
+import javax.inject.Inject
 
 class AuthFragment : Fragment(R.layout.fragment_auth) {
 

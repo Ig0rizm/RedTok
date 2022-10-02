@@ -6,7 +6,7 @@ import retrofit2.http.*
 import ru.project.data.models.Post
 import ru.project.data.models.Subreddit
 
-interface RedditApi {
+interface RedditService {
 
     @GET("/r/{subreddit}/random")
     fun getRandomPost(

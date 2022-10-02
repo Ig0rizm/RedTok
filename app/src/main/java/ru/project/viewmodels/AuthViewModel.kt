@@ -12,7 +12,7 @@ import net.openid.appauth.ClientSecretBasic
 import net.openid.appauth.TokenRequest
 import ru.project.extensions.default
 import ru.project.extensions.set
-import ru.project.repo.AuthRepository
+import ru.project.repository.AuthRepository
 
 sealed class AuthState {
     class DefaultState: AuthState()
@@ -24,7 +24,6 @@ sealed class AuthState {
 class AuthViewModel(app: Application) : AndroidViewModel(app) {
 
     val state = MutableLiveData<AuthState>().default(AuthState.DefaultState())
-
     val sharedPref = app.getSharedPreferences("RedTokPreference", Context.MODE_PRIVATE)
 
     init {

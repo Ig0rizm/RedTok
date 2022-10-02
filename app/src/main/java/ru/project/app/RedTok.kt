@@ -6,11 +6,20 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import ru.project.net.RedditApi
+import ru.project.di.AppComponent
+import ru.project.di.AppModule
+import ru.project.di.DaggerAppComponent
+import ru.project.net.RedditService
 
 class RedTok : Application() {
 
-    lateinit var redditApi: RedditApi
+    val appComponent: AppComponent by lazy {
+        DaggerAppComponent.builder()
+            .appModule(AppModule(this))
+            .build()
+    }
+
+    lateinit var redditService: RedditService
 
     override fun onCreate() {
         super.onCreate()
@@ -33,6 +42,6 @@ class RedTok : Application() {
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
 
-        redditApi = retrofit.create(RedditApi::class.java)
+        redditService = retrofit.create(RedditService::class.java)
     }
 }

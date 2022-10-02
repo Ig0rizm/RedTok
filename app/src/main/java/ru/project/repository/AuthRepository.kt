@@ -1,4 +1,4 @@
-package ru.project.repo
+package ru.project.repository
 
 import android.net.Uri
 import androidx.core.net.toUri
