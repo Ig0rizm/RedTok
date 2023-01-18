@@ -15,8 +15,18 @@ class ImagePostFragment : Fragment(R.layout.fragment_post_image) {
         super.onViewCreated(view, savedInstanceState)
 
         val imageUrl = arguments?.getString("imageUrl")
-        val image = GlideApp.with(this).load(imageUrl)
+        val postTitle = arguments?.getString("title")
+        val postSubreddit = arguments?.getString("subreddit")
+        val iconUrl = arguments?.getString("iconUrl")
 
-        image.into(binding.image)
+        val imageData = GlideApp.with(this).load(imageUrl)
+        val iconImage = GlideApp.with(this).load(iconUrl)
+
+        with (binding) {
+            iconImage.into(icon)
+            imageData.into(image)
+            subreddit.text = postSubreddit
+            title.text = postTitle
+        }
     }
 }

@@ -1,8 +1,12 @@
 package ru.project.viewmodels
 
+import android.annotation.SuppressLint
+import android.app.Application
+import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
+import ru.project.app.RedTok
 import ru.project.extensions.default
 import ru.project.extensions.set
 import ru.project.repository.FeedRepository
@@ -25,7 +29,7 @@ sealed class DataState {
     class IllegalTokenState: DataState()
 }
 
-class FeedViewModel : ViewModel() {
+class FeedViewModel(app: Application) : AndroidViewModel(app) {
 
     @Inject
     lateinit var feedRepository: FeedRepository
@@ -34,18 +38,39 @@ class FeedViewModel : ViewModel() {
     private val compositeDisposable = CompositeDisposable()
 
     init {
+        (app as RedTok).appComponent.inject(this)
+
         state.default(DataState.DefaultState())
         getPost("antiwork")
     }
 
+    @SuppressLint("CheckResult")
     fun getPost(subreddit: String) {
         state.set(DataState.LoadingState())
 
-        state.set(DataState.LoadedState(
-            feedRepository.getSubredditName(subreddit),
-            feedRepository.getTitle(subreddit),
-            feedRepository.getIcon(subreddit),
-            feedRepository.getData(subreddit)))
+        val a = feedRepository.getSubreddit(subreddit)
+        val b = feedRepository.getPost(subreddit)
+
+        a.zipWith(b) {t, u -> Pair(t ,u)}.subscribe({
+            if (it.first.isSuccessful and it.second.isSuccessful) {
+                var data: String? = it.second.body()!!.first().data.children.first().data.selftextHtml
+
+                if (data == null) {
+                    data = it.second.body()!!.first().data.children.first().data.urlOverriddenByDest
+                }
+
+                state.set(DataState.LoadedState(
+                    it.first.body()!!.data.displayName,
+                    it.second.body()!!.first().data.children.first().data.title,
+                    it.first.body()!!.data.iconImg,
+                    data))
+            }
+            else {
+                state.set(DataState.IllegalTokenState())
+            }
+        }, {
+            Log.e("RedTok", "Error")
+        })
     }
 
     override fun onCleared() {

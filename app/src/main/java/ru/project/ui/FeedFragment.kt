@@ -1,36 +1,38 @@
 package ru.project.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.webkit.URLUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import ru.project.R
-import ru.project.app.GlideApp
 import ru.project.app.RedTok
 import ru.project.databinding.FragmentFeedBinding
 import ru.project.extensions.toast
 import ru.project.viewmodels.DataState
 import ru.project.viewmodels.FeedViewModel
-import ru.project.viewmodels.SharedViewModel
+import ru.project.viewmodels.MainViewModel
 
 class FeedFragment : Fragment(R.layout.fragment_feed) {
 
     private val binding by viewBinding(FragmentFeedBinding::bind)
     private val viewModel: FeedViewModel by viewModels()
-    private val sharedViewModel: SharedViewModel by activityViewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        (activity?.application as RedTok).appComponent.inject(viewModel)
-    }
+    lateinit var activityViewModel: MainViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        activityViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
+        activityViewModel.getAllFragmentsData().observe(viewLifecycleOwner) {
+            if (it == "refresh") {
+                viewModel.getPost("antiwork")
+            }
+        }
 
         viewModel.state.observe(viewLifecycleOwner) {
             when (it) {
@@ -48,40 +50,29 @@ class FeedFragment : Fragment(R.layout.fragment_feed) {
                 }
 
                 is DataState.IllegalTokenState -> {
-                    toast("Illegal token!")
+                    toast("Invalid token!")
+                    (view.context.applicationContext as RedTok).getSharedPreferences("RedTokPreference", Context.MODE_PRIVATE).edit().putString("apiToken", "").apply()
                     findNavController()
                         .navigate(FeedFragmentDirections.actionDataFragmentToAuthFragment())
                 }
                 else -> {}
             }
         }
-
-        sharedViewModel.selected.observe(viewLifecycleOwner) { item ->
-            if (item.equals("refresh")) {
-                viewModel.getPost("antiwork")
-            }
-        }
     }
 
     private fun createPost(postSubreddit: String?, iconUrl: String?, postTitle: String?, data: String?) {
         if (postSubreddit != null && iconUrl != null && postTitle != null && data != null) {
-
-            val image = GlideApp.with(this).load(iconUrl)
-
-            with (binding) {
-                subreddit.text = postSubreddit
-                title.text = postTitle
-                image.into(icon)
-
-                val bundle = Bundle()
-                if (URLUtil.isValidUrl(data) and ((data.takeLast(4) == ".jpg") or (data.takeLast(4) == ".png"))) {
-                    bundle.putString("imageUrl", data)
-                    parentFragmentManager.beginTransaction().replace(post.id, ImagePostFragment::class.java, bundle).commit()
-                }
-                else {
-                    bundle.putString("data", data)
-                    parentFragmentManager.beginTransaction().replace(post.id, TextPostFragment::class.java, bundle).commit()
-                }
+            val bundle = Bundle()
+            bundle.putString("subreddit", postSubreddit)
+            bundle.putString("title", postTitle)
+            bundle.putString("iconUrl", iconUrl)
+            if (URLUtil.isValidUrl(data) and ((data.takeLast(4) == ".jpg") or (data.takeLast(4) == ".png"))) {
+                bundle.putString("imageUrl", data)
+                parentFragmentManager.beginTransaction().replace(binding.post.id, ImagePostFragment::class.java, bundle).commit()
+            }
+            else {
+                bundle.putString("data", data)
+                parentFragmentManager.beginTransaction().replace(binding.post.id, TextPostFragment::class.java, bundle).commit()
             }
         }
     }

@@ -1,45 +1,30 @@
 package ru.project.ui
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import by.kirich1409.viewbindingdelegate.viewBinding
 import ru.project.R
 import ru.project.databinding.ActivityMainBinding
-import ru.project.viewmodels.SharedViewModel
+import ru.project.viewmodels.MainViewModel
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private val binding by viewBinding(ActivityMainBinding::bind)
-    private val viewModel: SharedViewModel by viewModels()
+    private lateinit var mViewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        mViewModel = ViewModelProvider(this)[MainViewModel::class.java]
+
         with(binding) {
-            setContentView(root)
-            setSupportActionBar(toolbar)
-        }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_search -> {
-                viewModel.select("refresh")
-                true
+            swipeRefreshLayout.setOnRefreshListener {
+                mViewModel.changeAllFragmentsData("refresh")
+                swipeRefreshLayout.isRefreshing = false
             }
-            else -> super.onOptionsItemSelected(item)
+            setContentView(root)
         }
     }
 }

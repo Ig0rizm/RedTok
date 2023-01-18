@@ -6,6 +6,7 @@ import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import net.openid.appauth.AuthorizationException
@@ -16,12 +17,15 @@ import ru.project.databinding.FragmentAuthBinding
 import ru.project.extensions.toast
 import ru.project.viewmodels.AuthState
 import ru.project.viewmodels.AuthViewModel
+import ru.project.viewmodels.MainViewModel
 import javax.inject.Inject
 
 class AuthFragment : Fragment(R.layout.fragment_auth) {
 
     private val binding by viewBinding(FragmentAuthBinding::bind)
     private val viewModel: AuthViewModel by viewModels()
+
+    lateinit var aViewModel: MainViewModel
 
     private val getAuthResponse = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         val dataIntent = it.data
@@ -30,6 +34,11 @@ class AuthFragment : Fragment(R.layout.fragment_auth) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        aViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
+        aViewModel.getAllFragmentsData().observe(viewLifecycleOwner) {
+            toast(it)
+        }
 
         with(binding) {
             loginButton.setOnClickListener {
