@@ -3,8 +3,8 @@ package ru.project.net
 import io.reactivex.Single
 import retrofit2.Response
 import retrofit2.http.*
-import ru.project.data.models.Post
-import ru.project.data.models.Subreddit
+import ru.project.data.reddit.RedditJsonPost
+import ru.project.data.reddit.RedditJsonSubreddit
 
 interface RedditService {
 
@@ -12,11 +12,11 @@ interface RedditService {
     fun getRandomPost(
         @Path("subreddit") subreddit: String,
         @Header("Authorization") authorization: String
-    ): Single<Response<Post>>
+    ): Single<Response<RedditJsonPost>>
 
     @GET("/r/{subreddit}/about")
     fun getSubredditInfo(
         @Path("subreddit") subreddit: String,
         @Header("Authorization") authorization: String
-    ): Single<Response<Subreddit>>
+    ): Single<Response<RedditJsonSubreddit>>
 }

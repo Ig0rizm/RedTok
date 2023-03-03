@@ -29,7 +29,7 @@ class RedTok : Application() {
 
     private fun configureRetrofit() {
         val httpLoggingInterceptor = HttpLoggingInterceptor()
-        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.HEADERS
+        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BASIC
 
         val okHttpClient = OkHttpClient.Builder()
             .addInterceptor(httpLoggingInterceptor)

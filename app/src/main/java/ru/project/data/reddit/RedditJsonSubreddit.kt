@@ -1,9 +1,9 @@
-package ru.project.data.models
+package ru.project.data.reddit
 
 
 import com.google.gson.annotations.SerializedName
 
-data class Subreddit(
+data class RedditJsonSubreddit(
     val kind: String,
     val `data`: Data
 ) {
