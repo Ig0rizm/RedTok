@@ -6,12 +6,14 @@
 
     <!-- Strings used for menu -->
 
-    <string name="refreshBtn">Refresh</string>
+    <string name="bottomMenu_feed">feed</string>
+    <string name="bottomMenu_profile">profile</string>
+    <string name="refreshBtn">refresh</string>
 
     <!-- Strings used for fragments for navigation -->
 
     <string name="authFragmentLabel">AuthFragment</string>
-    <string name="dataFragmentLabel">DataFragment</string>
+    <string name="feedFragmentLabel">FeedFragment</string>
 
     <!-- AuthFragment -->
 
@@ -22,12 +24,5 @@
 
     <string name="Data">Get data</string>
     <string name="Icon">Icon</string>
-
-    <!-- TextPostFragment -->
-
-    <string name="BtnReadMore">Read more</string>
-
-    <!-- ImagePostFragment -->
-
-    <string name="imageName">ImagePost</string>
+    <string name="Image">Image</string>
 </resources>

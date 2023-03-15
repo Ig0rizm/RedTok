@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph"
+    android:id="@+id/nav_frag"
     app:startDestination="@id/authFragment">
 
     <fragment
@@ -12,12 +12,11 @@
         tools:layout="@layout/fragment_auth">
         <action
             android:id="@+id/action_authFragment_to_feedFragment"
-            app:destination="@id/feedFragment" />
+            app:destination="@id/dataFragment" />
     </fragment>
 
     <fragment
-        app:route="@string/bottomMenu_feed"
-        android:id="@+id/feedFragment"
+        android:id="@+id/dataFragment"
         android:name="ru.project.ui.FeedFragment"
         android:label="@string/feedFragmentLabel"
         tools:layout="@layout/fragment_feed">
@@ -25,11 +24,4 @@
             android:id="@+id/action_feedFragment_to_authFragment"
             app:destination="@id/authFragment" />
     </fragment>
-
-    <fragment
-        app:route="@string/bottomMenu_profile"
-        android:id="@+id/profileFragment"
-        android:name="ru.project.ui.FeedFragment"
-        android:label="fragment_profile"
-        tools:layout="@layout/fragment_feed" />
 </navigation>

@@ -3,6 +3,7 @@ package ru.project.viewmodels
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import io.reactivex.functions.Action
 import ru.project.app.RedTok
 import ru.project.data.models.PostListListener
 import ru.project.data.models.PostService
@@ -43,8 +44,10 @@ class FeedViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun onViewPagerPageSelected(position: Int) {
-        if (cardAdapter.itemCount - 2 == position || cardAdapter.itemCount - 1 == position) {
-            postService.addPost()
+        if (cardAdapter.itemCount - 2 <= position) {
+            postService.addPost {
+                state.set(DataState.IllegalTokenState)
+            }
         }
         if (cardAdapter.itemCount - 1 == position) {
             state.set(DataState.LoadingState)

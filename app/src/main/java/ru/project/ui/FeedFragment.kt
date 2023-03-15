@@ -53,7 +53,7 @@ class FeedFragment : Fragment(R.layout.fragment_feed) {
                     toast("Invalid token!")
                     (view.context.applicationContext as RedTok).getSharedPreferences("RedTokPreference", Context.MODE_PRIVATE).edit().putString("apiToken", "").apply()
                     findNavController()
-                        .navigate(FeedFragmentDirections.actionDataFragmentToAuthFragment())
+                        .navigate(FeedFragmentDirections.actionFeedFragmentToAuthFragment())
                 }
                 else -> {}
             }

@@ -8,8 +8,8 @@ class MainViewModel : ViewModel() {
 
     private val toAllFragments: MutableLiveData<String> = MutableLiveData()
 
-    fun changeAllFragmentsData(value: String) {
-        toAllFragments.postValue(value)
+    fun changeAllFragmentsData() {
+        toAllFragments.postValue("refresh")
     }
 
     fun getAllFragmentsData(): LiveData<String> {

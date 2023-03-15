@@ -1,6 +1,5 @@
 package ru.project.factories
 
-import android.util.Log
 import io.reactivex.Single
 import ru.project.data.models.Post
 import ru.project.net.RedditClient
@@ -18,8 +17,6 @@ class PostLoader(private val redditClient: RedditClient) {
                 subredditResult.body()!!.data.iconImg,
                 postResult.body()!!.first().data.children.first().data.selftextHtml?: postResult.body()!!.first().data.children.first().data.urlOverriddenByDest!!
             )
-        }.doOnError {
-            Log.e("RedTok", "Error")
         }
     }
 }

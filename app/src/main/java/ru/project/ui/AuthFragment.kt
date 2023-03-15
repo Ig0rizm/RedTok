@@ -52,7 +52,7 @@ class AuthFragment : Fragment(R.layout.fragment_auth) {
                 is AuthState.LoginState -> openAuthPage(it.intent)
                 is AuthState.ErrorState -> toast("Error")
                 is AuthState.SuccessAuthState -> findNavController()
-                    .navigate(AuthFragmentDirections.actionAuthFragmentToDataFragment())
+                    .navigate(AuthFragmentDirections.actionAuthFragmentToFeedFragment())
             }
         }
     }
