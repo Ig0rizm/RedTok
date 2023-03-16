@@ -16,7 +16,6 @@
     </fragment>
 
     <fragment
-        app:route="@string/bottomMenu_feed"
         android:id="@+id/feedFragment"
         android:name="ru.project.ui.FeedFragment"
         android:label="@string/feedFragmentLabel"
@@ -27,9 +26,13 @@
     </fragment>
 
     <fragment
-        app:route="@string/bottomMenu_profile"
         android:id="@+id/profileFragment"
-        android:name="ru.project.ui.FeedFragment"
-        android:label="fragment_profile"
-        tools:layout="@layout/fragment_feed" />
+        android:name="ru.project.ui.ProfileFragment"
+        android:label="@string/profileFragmentLabel"
+        tools:layout="@layout/fragment_profile">
+    </fragment>
+
+   <action android:id="@+id/toProfile" app:destination="@+id/profileFragment"/>
+
+    <action android:id="@+id/toFeed" app:destination="@+id/feedFragment"/>
 </navigation>

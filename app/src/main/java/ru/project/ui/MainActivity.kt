@@ -1,6 +1,5 @@
 package ru.project.ui
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.get
@@ -16,7 +15,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private val binding by viewBinding(ActivityMainBinding::bind)
     private lateinit var mViewModel: MainViewModel
 
-    @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -27,12 +25,12 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
         with(binding) {
             navView.menu[0].setOnMenuItemClickListener {
-                navController.navigate(R.string.bottomMenu_feed)
+                navController.navigate(R.id.toFeed)
                 true
             }
 
             navView.menu[3].setOnMenuItemClickListener {
-                navController.navigate(R.string.bottomMenu_profile)
+                navController.navigate(R.id.toProfile)
                 true
             }
 

@@ -6,14 +6,13 @@
 
     <!-- Strings used for menu -->
 
-    <string name="bottomMenu_feed">feed</string>
-    <string name="bottomMenu_profile">profile</string>
     <string name="refreshBtn">refresh</string>
 
     <!-- Strings used for fragments for navigation -->
 
     <string name="authFragmentLabel">AuthFragment</string>
     <string name="feedFragmentLabel">FeedFragment</string>
+    <string name="profileFragmentLabel">ProfileFragment</string>
 
     <!-- AuthFragment -->
 
