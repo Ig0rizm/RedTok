@@ -11,28 +11,17 @@
         android:label="@string/authFragmentLabel"
         tools:layout="@layout/fragment_auth">
         <action
-            android:id="@+id/action_authFragment_to_feedFragment"
-            app:destination="@id/feedFragment" />
+            android:id="@+id/action_authFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/feedFragment"
-        android:name="ru.project.ui.FeedFragment"
-        android:label="@string/feedFragmentLabel"
-        tools:layout="@layout/fragment_feed">
+        android:id="@+id/mainFragment"
+        android:name="ru.project.ui.MainFragment"
+        android:label="@string/mainFragmentLabel"
+        tools:layout="@layout/fragment_main">
         <action
-            android:id="@+id/action_feedFragment_to_authFragment"
+            android:id="@+id/action_mainFragment_to_authFragment"
             app:destination="@id/authFragment" />
     </fragment>
-
-    <fragment
-        android:id="@+id/profileFragment"
-        android:name="ru.project.ui.ProfileFragment"
-        android:label="@string/profileFragmentLabel"
-        tools:layout="@layout/fragment_profile">
-    </fragment>
-
-   <action android:id="@+id/toProfile" app:destination="@+id/profileFragment"/>
-
-    <action android:id="@+id/toFeed" app:destination="@+id/feedFragment"/>
 </navigation>

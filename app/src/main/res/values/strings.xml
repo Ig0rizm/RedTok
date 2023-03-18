@@ -8,9 +8,10 @@
 
     <string name="refreshBtn">refresh</string>
 
-    <!-- Strings used for fragments for navigation -->
+    <!-- Strings used for fragments navigation -->
 
     <string name="authFragmentLabel">AuthFragment</string>
+    <string name="mainFragmentLabel">MainFragment</string>
     <string name="feedFragmentLabel">FeedFragment</string>
     <string name="profileFragmentLabel">ProfileFragment</string>
 

@@ -1,18 +1,21 @@
 package ru.project.viewmodels
 
-import androidx.lifecycle.LiveData
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import ru.project.extensions.default
 
-class MainViewModel : ViewModel() {
+sealed class MainState {
+    object DefaultState : MainState()
 
-    private val toAllFragments: MutableLiveData<String> = MutableLiveData()
+    class ErrorState(val message: String) : MainState()
+}
 
-    fun changeAllFragmentsData() {
-        toAllFragments.postValue("refresh")
-    }
+class MainViewModel(app: Application): AndroidViewModel(app) {
 
-    fun getAllFragmentsData(): LiveData<String> {
-        return toAllFragments
+    val state = MutableLiveData<MainState>()
+
+    init {
+        state.default(MainState.DefaultState)
     }
 }

@@ -13,7 +13,7 @@ class PostService(val postLoader: PostLoader) {
     private val postList = mutableListOf<Post?>(null)
     private val listeners = mutableSetOf<PostListListener>()
 
-    fun addPost(action: Action) {
+    fun addPost(action: (message: String) -> Unit) {
         postLoader.getPost("antiwork")
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -24,7 +24,8 @@ class PostService(val postLoader: PostLoader) {
                     }
                     notifyChanges()
                 }, {
-                    action.run()
+                    if (it.message != null) { action(it.message!!) }
+                    else action("")
                 }
             )
     }

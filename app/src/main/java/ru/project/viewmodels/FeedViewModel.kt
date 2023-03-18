@@ -17,7 +17,7 @@ sealed class DataState {
 
     object LoadingState : DataState()
 
-    object IllegalTokenState : DataState()
+    class ErrorState(val message: String) : DataState()
 }
 
 class FeedViewModel(app: Application) : AndroidViewModel(app) {
@@ -45,9 +45,7 @@ class FeedViewModel(app: Application) : AndroidViewModel(app) {
 
     fun onViewPagerPageSelected(position: Int) {
         if (cardAdapter.itemCount - 2 <= position) {
-            postService.addPost {
-                state.set(DataState.IllegalTokenState)
-            }
+            postService.addPost { param: String -> state.set(DataState.ErrorState(param)) }
         }
         if (cardAdapter.itemCount - 1 == position) {
             state.set(DataState.LoadingState)
