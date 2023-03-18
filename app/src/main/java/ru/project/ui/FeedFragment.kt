@@ -7,7 +7,6 @@ import androidx.fragment.app.viewModels
 import androidx.viewpager2.widget.ViewPager2
 import by.kirich1409.viewbindingdelegate.viewBinding
 import ru.project.R
-import ru.project.app.RedTok
 import ru.project.databinding.FragmentFeedBinding
 import ru.project.extensions.toast
 import ru.project.viewmodels.DataState
@@ -21,14 +20,6 @@ class FeedFragment : Fragment(R.layout.fragment_feed) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //(requireActivity().application as RedTok).appComponent.inject(this)
-
-        /*activityViewModel.getAllFragmentsData().observe(viewLifecycleOwner) {
-            if (it == "refresh") {
-                viewModel.refresh()
-            }
-        }*/
-
         binding.viewPager.adapter = viewModel.getAdapter()
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
@@ -39,9 +30,7 @@ class FeedFragment : Fragment(R.layout.fragment_feed) {
 
         viewModel.state.observe(viewLifecycleOwner) {
             when (it) {
-                is DataState.DefaultState -> {
-
-                }
+                is DataState.DefaultState -> {}
 
                 is DataState.LoadingState -> {
                     binding.viewPager.currentItem = binding.viewPager.currentItem - 1
@@ -49,9 +38,6 @@ class FeedFragment : Fragment(R.layout.fragment_feed) {
 
                 is DataState.ErrorState -> {
                     toast(it.message)
-
-                    /*findNavController()
-                        .navigate(FeedFragmentDirections.actionFeedFragmentToAuthFragment())*/
                 }
             }
         }

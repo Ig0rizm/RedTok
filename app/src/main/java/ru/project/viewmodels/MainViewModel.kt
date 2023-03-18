@@ -3,19 +3,31 @@ package ru.project.viewmodels
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import io.reactivex.subjects.PublishSubject
+import ru.project.app.RedTok
 import ru.project.extensions.default
+import javax.inject.Inject
 
 sealed class MainState {
     object DefaultState : MainState()
 
-    class ErrorState(val message: String) : MainState()
+    class ErrorState(val message: String, val cause: Throwable?) : MainState()
 }
 
-class MainViewModel(app: Application): AndroidViewModel(app) {
+open class MainViewModel(app: Application): AndroidViewModel(app) {
 
-    val state = MutableLiveData<MainState>()
+    @Inject
+    lateinit var mainState: MutableLiveData<MainState>
+
+    @Inject
+    lateinit var swipeSubject: PublishSubject<Boolean>
 
     init {
-        state.default(MainState.DefaultState)
+        (app as RedTok).appComponent.inject(this)
+        mainState.default(MainState.DefaultState)
+    }
+
+    fun handleSwipeState() {
+        swipeSubject.onNext(true)
     }
 }

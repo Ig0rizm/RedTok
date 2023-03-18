@@ -1,9 +1,8 @@
 package ru.project.viewmodels
 
+import android.annotation.SuppressLint
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import io.reactivex.functions.Action
 import ru.project.app.RedTok
 import ru.project.data.models.PostListListener
 import ru.project.data.models.PostService
@@ -20,7 +19,8 @@ sealed class DataState {
     class ErrorState(val message: String) : DataState()
 }
 
-class FeedViewModel(app: Application) : AndroidViewModel(app) {
+@SuppressLint("CheckResult")
+class FeedViewModel(app: Application) : MainViewModel(app) {
 
     val state = MutableLiveData<DataState>()
 
@@ -37,6 +37,7 @@ class FeedViewModel(app: Application) : AndroidViewModel(app) {
         state.default(DataState.DefaultState)
 
         postService.addListener(postListeners)
+        swipeSubject.subscribe { refresh() }
     }
 
     fun getAdapter(): CardAdapter {
@@ -45,7 +46,12 @@ class FeedViewModel(app: Application) : AndroidViewModel(app) {
 
     fun onViewPagerPageSelected(position: Int) {
         if (cardAdapter.itemCount - 2 <= position) {
-            postService.addPost { param: String -> state.set(DataState.ErrorState(param)) }
+            postService.addPost { msg: String, cause: Throwable? ->
+                run {
+                    state.set(DataState.ErrorState(msg))
+                    mainState.set(MainState.ErrorState(msg, cause))
+                }
+            }
         }
         if (cardAdapter.itemCount - 1 == position) {
             state.set(DataState.LoadingState)
@@ -55,7 +61,7 @@ class FeedViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
-    fun refresh() {
+    private fun refresh() {
         postService.removeAll()
     }
 }
